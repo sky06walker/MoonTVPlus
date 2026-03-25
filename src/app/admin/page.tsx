@@ -8490,334 +8490,345 @@ const SiteConfigComponent = ({
         </p>
       </div>
 
-      {/* 轮播图数据源 */}
-      <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-          轮播图数据源
-        </label>
-        <select
-          value={siteSettings.BannerDataSource || 'Douban'}
-          onChange={(e) =>
-            setSiteSettings((prev) => ({
-              ...prev,
-              BannerDataSource: e.target.value,
-            }))
-          }
-          className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-        >
-          <option value='Douban'>豆瓣</option>
-          <option value='TMDB'>TMDB</option>
-          <option value='TX'>TX</option>
-        </select>
-        <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-          选择首页轮播图的数据来源
-        </p>
-      </div>
+      <details className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
+          数据源配置
+        </summary>
+        <div className='mt-4 space-y-4'>
+          {/* 轮播图数据源 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              轮播图数据源
+            </label>
+            <select
+              value={siteSettings.BannerDataSource || 'Douban'}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  BannerDataSource: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            >
+              <option value='Douban'>豆瓣</option>
+              <option value='TMDB'>TMDB</option>
+              <option value='TX'>TX</option>
+            </select>
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              选择首页轮播图的数据来源
+            </p>
+          </div>
 
-      {/* 更多推荐数据源 */}
-      <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-          更多推荐数据源
-        </label>
-        <select
-          value={siteSettings.RecommendationDataSource || 'Mixed'}
-          onChange={(e) =>
-            setSiteSettings((prev) => ({
-              ...prev,
-              RecommendationDataSource: e.target.value,
-            }))
-          }
-          className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-        >
-          <option value='Mixed'>混合</option>
-          <option value='Douban'>豆瓣</option>
-          <option value='TMDB'>TMDB</option>
-        </select>
-        <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-          选择详情页"更多推荐"的数据来源。混合模式会根据豆瓣ID和评论开关自动切换数据源
-        </p>
-      </div>
+          {/* 更多推荐数据源 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              更多推荐数据源
+            </label>
+            <select
+              value={siteSettings.RecommendationDataSource || 'Mixed'}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  RecommendationDataSource: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            >
+              <option value='Mixed'>混合</option>
+              <option value='Douban'>豆瓣</option>
+              <option value='TMDB'>TMDB</option>
+            </select>
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              选择详情页"更多推荐"的数据来源。混合模式会根据豆瓣ID和评论开关自动切换数据源
+            </p>
+          </div>
+        </div>
+      </details>
 
       {/* 弹幕 API 配置 */}
-      <div className='space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700'>
-        <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+      <details className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
           弹幕配置
-        </h3>
+        </summary>
+        <div className='mt-4 space-y-4'>
+          {/* 弹幕 API 地址 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              弹幕 API 地址
+            </label>
+            <input
+              type='text'
+              placeholder='http://localhost:9321'
+              value={siteSettings.DanmakuApiBase}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  DanmakuApiBase: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              弹幕服务器的 API 地址，默认为 http://localhost:9321。API部署参考
+              <a
+                href='https://github.com/huangxd-/danmu_api.git'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
+              >
+                danmu_api
+              </a>
+            </p>
+          </div>
 
-        {/* 弹幕 API 地址 */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            弹幕 API 地址
-          </label>
-          <input
-            type='text'
-            placeholder='http://localhost:9321'
-            value={siteSettings.DanmakuApiBase}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                DanmakuApiBase: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            弹幕服务器的 API 地址，默认为 http://localhost:9321。API部署参考
-            <a
-              href='https://github.com/huangxd-/danmu_api.git'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
-            >
-              danmu_api
-            </a>
-          </p>
+          {/* 弹幕 API Token */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              弹幕 API Token
+            </label>
+            <input
+              type='text'
+              placeholder='87654321'
+              value={siteSettings.DanmakuApiToken}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  DanmakuApiToken: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              弹幕服务器的访问令牌，默认为 87654321
+            </p>
+          </div>
         </div>
-
-        {/* 弹幕 API Token */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            弹幕 API Token
-          </label>
-          <input
-            type='text'
-            placeholder='87654321'
-            value={siteSettings.DanmakuApiToken}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                DanmakuApiToken: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            弹幕服务器的访问令牌，默认为 87654321
-          </p>
-        </div>
-      </div>
+      </details>
 
       {/* TMDB 配置 */}
-      <div className='space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700'>
-        <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+      <details className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
           TMDB 配置
-        </h3>
+        </summary>
+        <div className='mt-4 space-y-4'>
+          {/* TMDB API Key */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              TMDB API Key
+            </label>
+            <input
+              type='text'
+              placeholder='请输入 TMDB API Key（多个key用英文逗号分隔）'
+              value={siteSettings.TMDBApiKey}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  TMDBApiKey: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              配置后首页将显示 TMDB 即将上映电影。支持配置多个 API Key（用英文逗号分隔）以实现轮询，避免单个 Key 请求限制。获取 API Key 请访问{' '}
+              <a
+                href='https://www.themoviedb.org/settings/api'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
+              >
+                TMDB API 设置页面
+              </a>
+            </p>
+          </div>
 
-        {/* TMDB API Key */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            TMDB API Key
-          </label>
-          <input
-            type='text'
-            placeholder='请输入 TMDB API Key（多个key用英文逗号分隔）'
-            value={siteSettings.TMDBApiKey}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                TMDBApiKey: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            配置后首页将显示 TMDB 即将上映电影。支持配置多个 API Key（用英文逗号分隔）以实现轮询，避免单个 Key 请求限制。获取 API Key 请访问{' '}
-            <a
-              href='https://www.themoviedb.org/settings/api'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
-            >
-              TMDB API 设置页面
-            </a>
-          </p>
-        </div>
+          {/* TMDB Proxy */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              TMDB 系统代理
+            </label>
+            <input
+              type='text'
+              placeholder='请输入代理地址（可选）'
+              value={siteSettings.TMDBProxy}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  TMDBProxy: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              配置代理服务器地址，用于访问 TMDB API（可选）
+            </p>
+          </div>
 
-        {/* TMDB Proxy */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            TMDB 系统代理
-          </label>
-          <input
-            type='text'
-            placeholder='请输入代理地址（可选）'
-            value={siteSettings.TMDBProxy}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                TMDBProxy: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            配置代理服务器地址，用于访问 TMDB API（可选）
-          </p>
+          {/* TMDB Reverse Proxy */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              TMDB 反代代理
+            </label>
+            <input
+              type='text'
+              placeholder='请输入反代 Base URL（可选）'
+              value={siteSettings.TMDBReverseProxy}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  TMDBReverseProxy: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              配置 TMDB 反向代理 Base URL（可选）
+            </p>
+          </div>
         </div>
-
-        {/* TMDB Reverse Proxy */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            TMDB 反代代理
-          </label>
-          <input
-            type='text'
-            placeholder='请输入反代 Base URL（可选）'
-            value={siteSettings.TMDBReverseProxy}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                TMDBReverseProxy: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            配置 TMDB 反向代理 Base URL（可选）
-          </p>
-        </div>
-      </div>
+      </details>
 
       {/* Pansou 配置 */}
-      <div className='space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700'>
-        <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+      <details className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
           Pansou 网盘搜索配置
-        </h3>
+        </summary>
+        <div className='mt-4 space-y-4'>
+          {/* Pansou API 地址 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              Pansou API 地址
+            </label>
+            <input
+              type='text'
+              placeholder='请输入 Pansou API 地址，如：http://localhost:8888'
+              value={siteSettings.PansouApiUrl}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  PansouApiUrl: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              配置 Pansou 服务器地址，用于网盘资源搜索。项目地址：{' '}
+              <a
+                href='https://github.com/fish2018/pansou'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
+              >
+                https://github.com/fish2018/pansou
+              </a>
+            </p>
+          </div>
 
-        {/* Pansou API 地址 */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            Pansou API 地址
-          </label>
-          <input
-            type='text'
-            placeholder='请输入 Pansou API 地址，如：http://localhost:8888'
-            value={siteSettings.PansouApiUrl}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                PansouApiUrl: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            配置 Pansou 服务器地址，用于网盘资源搜索。项目地址：{' '}
-            <a
-              href='https://github.com/fish2018/pansou'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
-            >
-              https://github.com/fish2018/pansou
-            </a>
-          </p>
-        </div>
+          {/* Pansou 账号 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              Pansou 账号（可选）
+            </label>
+            <input
+              type='text'
+              placeholder='如果 Pansou 启用了认证，请输入账号'
+              value={siteSettings.PansouUsername}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  PansouUsername: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              如果 Pansou 服务启用了认证功能，需要提供账号密码
+            </p>
+          </div>
 
-        {/* Pansou 账号 */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            Pansou 账号（可选）
-          </label>
-          <input
-            type='text'
-            placeholder='如果 Pansou 启用了认证，请输入账号'
-            value={siteSettings.PansouUsername}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                PansouUsername: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            如果 Pansou 服务启用了认证功能，需要提供账号密码
-          </p>
-        </div>
+          {/* Pansou 密码 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              Pansou 密码（可选）
+            </label>
+            <input
+              type='password'
+              placeholder='如果 Pansou 启用了认证，请输入密码'
+              value={siteSettings.PansouPassword}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  PansouPassword: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              配置账号密码后，系统会自动登录并缓存 Token
+            </p>
+          </div>
 
-        {/* Pansou 密码 */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            Pansou 密码（可选）
-          </label>
-          <input
-            type='password'
-            placeholder='如果 Pansou 启用了认证，请输入密码'
-            value={siteSettings.PansouPassword}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                PansouPassword: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            配置账号密码后，系统会自动登录并缓存 Token
-          </p>
+          {/* 关键词屏蔽 */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              关键词屏蔽（可选）
+            </label>
+            <input
+              type='text'
+              placeholder='多个关键词用中文或英文逗号分隔'
+              value={siteSettings.PansouKeywordBlocklist}
+              onChange={(e) =>
+                setSiteSettings((prev) => ({
+                  ...prev,
+                  PansouKeywordBlocklist: e.target.value,
+                }))
+              }
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+            />
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              设置后会过滤包含这些关键词的搜索结果
+            </p>
+          </div>
         </div>
-
-        {/* 关键词屏蔽 */}
-        <div>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            关键词屏蔽（可选）
-          </label>
-          <input
-            type='text'
-            placeholder='多个关键词用中文或英文逗号分隔'
-            value={siteSettings.PansouKeywordBlocklist}
-            onChange={(e) =>
-              setSiteSettings((prev) => ({
-                ...prev,
-                PansouKeywordBlocklist: e.target.value,
-              }))
-            }
-            className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
-          />
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            设置后会过滤包含这些关键词的搜索结果
-          </p>
-        </div>
-      </div>
+      </details>
 
       {/* 评论功能配置 */}
-      <div className='space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700'>
-        <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+      <details className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
           评论配置
-        </h3>
-
-        {/* 开启评论与相似推荐 */}
-        <div>
-          <div className='flex items-center justify-between'>
-            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-              开启评论与相似推荐
-            </label>
-            <button
-              type='button'
-              onClick={() => handleCommentsToggle(!siteSettings.EnableComments)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
-                siteSettings.EnableComments
-                  ? buttonStyles.toggleOn
-                  : buttonStyles.toggleOff
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full ${
-                  buttonStyles.toggleThumb
-                } transition-transform ${
+        </summary>
+        <div className='mt-4 space-y-4'>
+          {/* 开启评论与相似推荐 */}
+          <div>
+            <div className='flex items-center justify-between'>
+              <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+                开启评论与相似推荐
+              </label>
+              <button
+                type='button'
+                onClick={() => handleCommentsToggle(!siteSettings.EnableComments)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
                   siteSettings.EnableComments
-                    ? buttonStyles.toggleThumbOn
-                    : buttonStyles.toggleThumbOff
+                    ? buttonStyles.toggleOn
+                    : buttonStyles.toggleOff
                 }`}
-              />
-            </button>
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full ${
+                    buttonStyles.toggleThumb
+                  } transition-transform ${
+                    siteSettings.EnableComments
+                      ? buttonStyles.toggleThumbOn
+                      : buttonStyles.toggleThumbOff
+                  }`}
+                />
+              </button>
+            </div>
+            <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+              开启后将显示豆瓣评论与相似推荐。评论为逆向抓取，请自行承担责任。
+            </p>
           </div>
-          <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
-            开启后将显示豆瓣评论与相似推荐。评论为逆向抓取，请自行承担责任。
-          </p>
         </div>
-      </div>
+      </details>
 
       {/* 操作按钮 */}
       <div className='flex justify-end'>

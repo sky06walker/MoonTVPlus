@@ -2,11 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Flame, RefreshCw } from 'lucide-react';
 import { playMusicList } from '@/lib/music/actions';
 import MusicLoadingIndicator from '@/components/music/MusicLoadingIndicator';
 import SongList from '@/components/music/SongList';
 import { mapSong, musicSources, normalizeSource } from '@/lib/music/shared';
 import type { Song } from '@/lib/music/types';
+
+type HotSearchItem = { keyword: string; artist?: string };
+
+const HOT_SEARCH_CACHE_DURATION = 60 * 60 * 1000;
+const HOT_SEARCH_LIMIT = 20;
+
+function getHotSearchCacheKey(source: string) {
+  return `music_hot_search_${source}`;
+}
 
 export default function MusicSearchPage() {
   const router = useRouter();
@@ -16,12 +26,67 @@ export default function MusicSearchPage() {
   const [keyword, setKeyword] = useState(q);
   const [selectedSource, setSelectedSource] = useState(source);
   const [songs, setSongs] = useState<Song[]>([]);
+  const [hotSearches, setHotSearches] = useState<HotSearchItem[]>([]);
+  const [hotLoading, setHotLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSourceMenu, setShowSourceMenu] = useState(false);
+
+  const loadHotSearch = async (forceRefresh = false) => {
+    const cacheKey = getHotSearchCacheKey(source);
+    let cachedData: HotSearchItem[] | null = null;
+    let cacheExpired = true;
+
+    if (!forceRefresh) {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Array.isArray(data)) {
+            cachedData = data;
+            cacheExpired = Date.now() - Number(timestamp || 0) > HOT_SEARCH_CACHE_DURATION;
+          }
+        }
+      } catch {
+        cachedData = null;
+      }
+    }
+
+    if (cachedData) {
+      setHotSearches(cachedData);
+      setHotLoading(false);
+    } else {
+      setHotSearches([]);
+      setHotLoading(true);
+    }
+
+    if (!cachedData || cacheExpired || forceRefresh) {
+      try {
+        const res = await fetch(`/api/music/v2/discovery/hot-search?source=${source}`);
+        const data = await res.json();
+        if (data.success) {
+          const nextHotSearches = (data.data?.list || []).slice(0, HOT_SEARCH_LIMIT);
+          setHotSearches(nextHotSearches);
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({ data: nextHotSearches, timestamp: Date.now() }));
+          } catch {
+            // ignore cache write failure
+          }
+        } else if (!cachedData) {
+          setHotSearches([]);
+        }
+      } catch {
+        if (!cachedData) setHotSearches([]);
+      } finally {
+        setHotLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     setSelectedSource(source);
     setKeyword(q);
+    void loadHotSearch();
+
     if (!q) {
       setSongs([]);
       return;
@@ -144,14 +209,49 @@ export default function MusicSearchPage() {
       ) : q ? (
         <SongList songs={songs} />
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-white/10 bg-white/5 py-20 text-center backdrop-blur-sm">
-          <div className="w-20 h-20 mb-6 rounded-full bg-white/5 flex items-center justify-center shadow-inner">
-            <svg className="h-10 w-10 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-4 md:p-6 backdrop-blur-sm">
+          <div className="mb-5 flex items-center gap-3">
+            <Flame className="h-6 w-6 shrink-0 text-orange-500" />
+            <div className="min-w-0">
+              <div className="text-xl font-bold text-white">热门搜索</div>
+              <div className="text-sm text-zinc-500">当前音源：{currentSourceLabel}</div>
+            </div>
           </div>
-          <div className="text-xl font-bold text-zinc-300 mb-2">开始你的音乐探索</div>
-          <div className="text-sm text-zinc-500 max-w-sm">在上方输入你想听的歌曲、歌手或专辑，我们为你搜罗全网好音乐。</div>
+          {hotLoading ? (
+            <MusicLoadingIndicator className="py-10" />
+          ) : hotSearches.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-3">
+              {hotSearches.map((item, index) => (
+                <button
+                  key={`${item.keyword}-${index}`}
+                  onClick={() => {
+                    setKeyword(item.keyword);
+                    router.push(`/music/search?source=${source}&q=${encodeURIComponent(item.keyword)}`);
+                  }}
+                  className="group flex h-14 items-center overflow-hidden rounded-lg border border-white/10 bg-white/5 px-2.5 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-500/10 hover:shadow-md"
+                >
+                  <span className={`mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${index < 3 ? 'bg-gradient-to-r from-orange-400 to-red-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                    {index + 1}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-white group-hover:text-emerald-300">
+                    {item.keyword}
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="py-10 text-center text-sm text-zinc-500">暂无热搜数据</div>
+          )}
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={() => void loadHotSearch(true)}
+              className="text-sm text-zinc-400 transition-colors hover:text-emerald-400"
+            >
+              <RefreshCw className="mr-1 inline-block h-4 w-4" />
+              刷新热搜
+            </button>
+          </div>
         </div>
       )}
     </div>
